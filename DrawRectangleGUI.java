@@ -1,8 +1,6 @@
-package application;
-
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,15 +14,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /*Still need to: 
- * setup display for the drawBox -- I added border and used padding. Will this work?
- * add second shape if you wanna do extra credit stuff -- maybe circle?
- * 
- * I also don't really like how hers is aligned, tbh. I guess we can just roll with it anyway.
- * 
+ * Having issues with drawBox being resized when drawing rectangles
  */
 public class DrawRectangleGUI extends Application {
 	Button clearButton;
@@ -40,11 +33,10 @@ public class DrawRectangleGUI extends Application {
 
 		VBox mainPane = new VBox();
 		
-		Text newText = new Text("Meow");
-		HBox drawBox = new HBox(newText);
+		HBox drawBox = new HBox();
 		drawBox.setAlignment(Pos.CENTER);
 		drawBox.setSpacing(10);
-		drawBox.setPadding(new Insets(197));
+		drawBox.setPrefHeight(430);	// added height
 		String cssLayout = "-fx-border-color: black;\n" + "-fx-border-insets: 7;\n" + "-fx-border-width: 2;\n";
 		
 		drawBox.setStyle(cssLayout);
@@ -111,7 +103,12 @@ public class DrawRectangleGUI extends Application {
 
 		// clear drawing button
 		clearButton = new Button("Clear");
-		clearButton.setOnAction(this::clearButtonHandler);
+		clearButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				drawBox.getChildren().clear();
+			}
+		});
 
 		// nest the panes together
 		VBox nestedPanes = new VBox(colorSelectionBox, borderSizeBox, clearButton);
@@ -126,10 +123,6 @@ public class DrawRectangleGUI extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
-
-	}
-
-	private void clearButtonHandler(ActionEvent event) {
 
 	}
 
